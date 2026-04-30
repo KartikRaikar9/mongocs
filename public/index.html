@@ -3,57 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
-<link rel="stylesheet" href="style.css">
+<title>PetalPlan Studio | Control Center</title>
+<link rel="stylesheet" href="/style.css?v=2">
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="logo">EventSphere</div>
+<div class="app-shell">
+  <aside class="side-panel">
+    <div class="brand-wrap">
+      <div class="logo-mark">PP</div>
+      <div>
+        <h1 class="brand">PetalPlan Studio</h1>
+        <p class="sub-brand">Event Control Center</p>
+      </div>
+    </div>
 
-  <div class="nav-tools">
-    <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterEvents()">
-    <select id="locationFilter" onchange="filterEvents()"></select>
-    <button onclick="sortByDate()">Sort</button>
-    <button onclick="toggleDarkMode()">🌙</button>
-    <span id="welcomeUser"></span>
-    <button onclick="logout()">Logout</button>
-  </div>
-</nav>
+    <div class="side-actions">
+      <button class="primary-btn" onclick="openModal()">+ Create Session</button>
+      <button class="ghost-btn" onclick="sortByDate()">Sort by Date</button>
+      <button class="ghost-btn" onclick="toggleDarkMode()">Toggle Theme</button>
+      <button class="ghost-btn" onclick="logout()">Sign Out</button>
+    </div>
+  </aside>
 
-<header class="hero">
-  <h1>Event Dashboard</h1>
-  <button class="primary-btn" onclick="openModal()">+ Add Event</button>
-</header>
+  <main class="main-panel">
+    <header class="topbar">
+      <div>
+        <h2>Studio Dashboard</h2>
+        <p>Coordinate sessions, bookings, and audience responses from one place.</p>
+      </div>
+      <span id="welcomeUser" class="welcome-tag"></span>
+    </header>
 
-<section class="stats">
-  <div class="stat-card"><h2 id="totalEvents">0</h2><p>Total</p></div>
-  <div class="stat-card"><h2 id="upcomingEvents">0</h2><p>Upcoming</p></div>
-  <div class="stat-card"><h2 id="locationsCount">0</h2><p>Locations</p></div>
-</section>
+    <section class="filters-row">
+      <input type="text" id="searchInput" placeholder="Search by title or location" onkeyup="filterEvents()">
+      <select id="locationFilter" onchange="filterEvents()"></select>
+    </section>
 
-<section class="events-section">
-  <div id="eventGrid" class="event-grid"></div>
-</section>
+    <section class="stats">
+      <div class="stat-card"><h2 id="totalEvents">0</h2><p>Total Sessions</p></div>
+      <div class="stat-card"><h2 id="upcomingEvents">0</h2><p>Upcoming</p></div>
+      <div class="stat-card"><h2 id="locationsCount">0</h2><p>Active Venues</p></div>
+    </section>
+
+    <section class="events-section">
+      <div class="section-head">
+        <h3>Live Session Board</h3>
+      </div>
+      <div id="eventGrid" class="event-grid"></div>
+    </section>
+  </main>
+</div>
+
+<div class="mobile-actions">
+  <button onclick="openModal()">+ Session</button>
+  <button onclick="sortByDate()">Sort</button>
+  <button onclick="toggleDarkMode()">Theme</button>
+  <button onclick="logout()">Exit</button>
+</div>
 
 <div class="modal" id="eventModal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">&times;</span>
 
+    <h3>Session Editor</h3>
     <input type="hidden" id="editId">
 
-    <input type="text" id="title" placeholder="Title">
+    <input type="text" id="title" placeholder="Session Title">
     <input type="date" id="date">
-    <input type="text" id="location" placeholder="Location">
+    <input type="text" id="location" placeholder="Venue">
 
-    <input type="text" id="category" placeholder="Category">
-    <input type="text" id="image" placeholder="Image URL">
+    <input type="text" id="category" placeholder="Track / Category">
+    <input type="text" id="image" placeholder="Poster URL">
 
-    <input type="number" id="totalSeats" placeholder="Total Seats">
+    <input type="number" id="totalSeats" placeholder="Seat Capacity">
 
-    <textarea id="description" placeholder="Enter full event description" required></textarea>
+    <textarea id="description" placeholder="Add session notes and highlights" required></textarea>
 
-    <button class="primary-btn" onclick="saveEvent()">Save</button>
+    <button class="primary-btn" onclick="saveEvent()">Save Session</button>
   </div>
 </div>
 

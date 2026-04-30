@@ -1,4 +1,13 @@
 let allEvents = [];
+const API = {
+  createSession: "/studio/api/sessions",
+  listSessions: "/studio/api/sessions",
+  updateSession: "/studio/api/sessions",
+  deleteSession: "/studio/api/sessions",
+  reserveSeat: "/studio/api/sessions/book",
+  toggleStar: "/studio/api/sessions/favorite",
+  setStatus: "/studio/api/sessions/rsvp"
+};
 
 window.onload = () => {
   const user = localStorage.getItem("user") || "User";
@@ -64,7 +73,7 @@ async function saveEvent() {
     return;
   }
 
-  const url = id ? "/update/" + id : "/addEvent";
+  const url = id ? API.updateSession + "/" + id : API.createSession;
   const method = id ? "PUT" : "POST";
 
   const res = await fetch(url, {
@@ -80,7 +89,7 @@ async function saveEvent() {
 
 /* Load Events */
 async function loadEvents() {
-  const res = await fetch("/events");
+  const res = await fetch(API.listSessions);
   allEvents = await res.json();
 
   renderEvents(allEvents);
@@ -110,9 +119,9 @@ function renderEvents(events) {
         <p class="desc">${e.description || ""}</p>
 
         <p>🎟️ Seats Left: <strong>${e.seatsLeft}</strong> / ${e.totalSeats}</p>
-        <p class="status">Status: <strong>${e.rsvp}</strong></p>
+        <p class="status">Audience Status: <strong>${e.rsvp}</strong></p>
 
-        <button onclick="bookEvent('${e._id}')">Book</button>
+        <button onclick="bookEvent('${e._id}')">Reserve</button>
 
         <button onclick='editEvent(
           "${e._id}",
@@ -123,12 +132,12 @@ function renderEvents(events) {
           ${JSON.stringify(e.image || "")},
           ${JSON.stringify(e.description || "")},
           "${e.totalSeats || 50}"
-        )'>Edit</button>
+        )'>Modify</button>
 
-        <button onclick="toggleFavorite('${e._id}')">❤️</button>
-        <button onclick="setRSVP('${e._id}','Going')">Going</button>
+        <button onclick="toggleFavorite('${e._id}')">Star</button>
+        <button onclick="setRSVP('${e._id}','Going')">Confirmed</button>
         <button onclick="setRSVP('${e._id}','Interested')">Interested</button>
-        <button class="delete-btn" onclick="deleteEvent('${e._id}')">Delete</button>
+        <button class="delete-btn" onclick="deleteEvent('${e._id}')">Remove</button>
       </div>
     `;
   });
@@ -151,28 +160,28 @@ function editEvent(id, title, date, location, category, image, description, tota
 
 /* Delete */
 async function deleteEvent(id) {
-  await fetch("/delete/" + id, { method: "DELETE" });
-  showToast("Deleted");
+  await fetch(API.deleteSession + "/" + id, { method: "DELETE" });
+  showToast("Session removed");
   loadEvents();
 }
 
 /* Book */
 async function bookEvent(id) {
-  const res = await fetch("/book/" + id, { method: "PUT" });
+  const res = await fetch(API.reserveSeat + "/" + id, { method: "PUT" });
   showToast(await res.text());
   loadEvents();
 }
 
 /* Favorite */
 async function toggleFavorite(id) {
-  const res = await fetch("/favorite/" + id, { method: "PUT" });
+  const res = await fetch(API.toggleStar + "/" + id, { method: "PUT" });
   showToast(await res.text());
   loadEvents();
 }
 
 /* RSVP */
 async function setRSVP(id, status) {
-  const res = await fetch("/rsvp/" + id, {
+  const res = await fetch(API.setStatus + "/" + id, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ rsvp: status })
@@ -186,7 +195,7 @@ async function setRSVP(id, status) {
 function sortByDate() {
   const sorted = [...allEvents].sort((a, b) => new Date(a.date) - new Date(b.date));
   renderEvents(sorted);
-  showToast("Sorted by date");
+  showToast("Sorted by session date");
 }
 
 /* Search */
@@ -248,7 +257,7 @@ function toggleDarkMode() {
 
 function logout() {
   localStorage.removeItem("user");
-  location.href = "/";
+  location.href = "/studio/login";
 }
 
 function showToast(msg) {

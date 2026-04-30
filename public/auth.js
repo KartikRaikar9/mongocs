@@ -3,7 +3,7 @@ async function signup() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  const res = await fetch("/signup", {
+  const res = await fetch("/studio/auth/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -15,7 +15,7 @@ async function signup() {
 
   if (res.ok) {
     alert("Signup successful");
-    location.href = "/";
+    location.href = "/studio/login";
   } else {
     alert(msg);
   }
@@ -25,7 +25,7 @@ async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  const res = await fetch("/login", {
+  const res = await fetch("/studio/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -39,7 +39,7 @@ async function login() {
 
   if (res.ok) {
     localStorage.setItem("user", data.name);
-    location.href = "/dashboard";
+    location.href = "/studio/dashboard";
   } else {
     alert(data.message);
   }

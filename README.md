@@ -109,7 +109,15 @@ cd Event_Management
 npm install
 ```
 
-### 3. Start MongoDB
+### 3. Configure environment
+
+Create a `.env` file in the project root:
+
+```
+MONGO_URI=mongodb://127.0.0.1:27017/eventDB
+```
+
+### 4. Start MongoDB
 
 Make sure MongoDB is running locally:
 
@@ -117,13 +125,13 @@ Make sure MongoDB is running locally:
 mongodb://127.0.0.1:27017/eventDB
 ```
 
-### 4. Run the server
+### 5. Run the server
 
 ```
 node server.js
 ```
 
-### 5. Open in browser
+### 6. Open in browser
 
 ```
 http://localhost:5000
