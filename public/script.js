@@ -1,12 +1,12 @@
 let allEvents = [];
 const API = {
-  createSession: "/studio/api/sessions",
-  listSessions: "/studio/api/sessions",
-  updateSession: "/studio/api/sessions",
-  deleteSession: "/studio/api/sessions",
-  reserveSeat: "/studio/api/sessions/book",
-  toggleStar: "/studio/api/sessions/favorite",
-  setStatus: "/studio/api/sessions/rsvp"
+  createSession: "/api/events",
+  listSessions: "/api/events",
+  updateSession: "/api/events",
+  deleteSession: "/api/events",
+  reserveSeat: "/api/events/book",
+  toggleStar: "/api/events/favorite",
+  setStatus: "/api/events/rsvp"
 };
 
 window.onload = () => {
@@ -82,7 +82,10 @@ async function saveEvent() {
     body: JSON.stringify(payload)
   });
 
-  showToast(await res.text());
+  const data = await res.json().catch(async () => ({
+    message: await res.text()
+  }));
+  showToast(data.message || "Success");
   closeModal();
   loadEvents();
 }
@@ -167,27 +170,36 @@ async function deleteEvent(id) {
 
 /* Book */
 async function bookEvent(id) {
-  const res = await fetch(API.reserveSeat + "/" + id, { method: "PUT" });
-  showToast(await res.text());
+  const res = await fetch(API.reserveSeat + "?id=" + id, { method: "PUT" });
+  const data = await res.json().catch(async () => ({
+    message: await res.text()
+  }));
+  showToast(data.message || "Success");
   loadEvents();
 }
 
 /* Favorite */
 async function toggleFavorite(id) {
-  const res = await fetch(API.toggleStar + "/" + id, { method: "PUT" });
-  showToast(await res.text());
+  const res = await fetch(API.toggleStar + "?id=" + id, { method: "PUT" });
+  const data = await res.json().catch(async () => ({
+    message: await res.text()
+  }));
+  showToast(data.message || "Success");
   loadEvents();
 }
 
 /* RSVP */
 async function setRSVP(id, status) {
-  const res = await fetch(API.setStatus + "/" + id, {
+  const res = await fetch(API.setStatus + "?id=" + id, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ rsvp: status })
   });
 
-  showToast(await res.text());
+  const data = await res.json().catch(async () => ({
+    message: await res.text()
+  }));
+  showToast(data.message || "Success");
   loadEvents();
 }
 
