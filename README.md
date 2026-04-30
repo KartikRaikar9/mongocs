@@ -1,3 +1,30 @@
+# Event Management (Local)
+
+Quick notes to run this project locally.
+
+Requirements
+- Node.js (18+ recommended)
+- MongoDB (local `mongod` running)
+
+Start local MongoDB (single terminal, keep it running):
+```powershell
+mkdir C:\data\db
+mongod --dbpath C:\data\db
+```
+
+Install dependencies and run the app:
+```powershell
+cd Event_Management_Final
+npm install
+node server.js
+```
+
+App defaults
+- Server: http://localhost:5000
+- MongoDB URI (default): `mongodb://127.0.0.1:27017/eventDB`
+
+Notes
+- `node_modules/` and `.env` are ignored by git. If you previously committed large folders, run `git rm -r --cached node_modules` then commit.
 # 🎉 EventSphere – Event Management System
 
 ## 📌 Overview
