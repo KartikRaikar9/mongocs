@@ -4,9 +4,9 @@
   "description": "Event Management Application",
   "main": "api/index.js",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "node dev-server.js",
     "build": "echo 'Build step'",
-    "start": "node api/index.js"
+    "start": "node dev-server.js"
   },
   "keywords": [],
   "author": "",
@@ -15,9 +15,7 @@
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "mongoose": "^9.4.1"
-  },
-  "devDependencies": {
-    "vercel": "^latest"
   }
 }
